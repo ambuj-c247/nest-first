@@ -20,8 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, "jwt") {
   }
 
   async validate(payload: { userId: mongoose.Types.ObjectId; email: string }) {
-    const user = await this.userModel.findById(payload.userId, "-password");
-    delete user.password;
+    const user = await this.userModel.findById(payload.userId);
     return user;
   }
 }

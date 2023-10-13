@@ -7,11 +7,11 @@ import {
 } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { ApiResponse } from "../api-response.common";
+import { ApiResponseWithData } from "../api-response.common";
 
 @Injectable()
 export class ResponseInterceptor<T>
-  implements NestInterceptor<T, ApiResponse<T>>
+  implements NestInterceptor<T, ApiResponseWithData<T>>
 {
   constructor(
     private readonly defaultStatusCode: number = 200,
@@ -21,10 +21,10 @@ export class ResponseInterceptor<T>
   intercept(
     context: ExecutionContext,
     next: CallHandler,
-  ): Observable<ApiResponse<T>> {
+  ): Observable<ApiResponseWithData<T>> {
     return next.handle().pipe(
       map((data) => {
-        return new ApiResponse<T>(
+        return new ApiResponseWithData<T>(
           this.defaultStatusCode,
           this.defaultMessage,
           data,

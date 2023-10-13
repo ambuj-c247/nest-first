@@ -4,7 +4,12 @@ import { AuthService } from "./auth.service";
 // import * as mongoose from "mongoose";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { AuthDto } from "./dto/auth.dto";
-import { ApiResponse } from "src/common/api-response.common";
+import {
+  ApiResponseWithData,
+  ApiResponseWithoutData,
+} from "src/common/api-response.common";
+import { ForgetPasswordDto } from "./dto/forget-password.dto";
+import { ResetPasswordDto } from "./dto/reset-password.dto";
 
 // 'auth' will be the common suffix of route
 @Controller("auth")
@@ -18,7 +23,7 @@ export class AuthController {
   ) {
     const newUser = await this.authService.signup(user);
     delete newUser.password;
-    return new ApiResponse(
+    return new ApiResponseWithData(
       HttpStatus.CREATED,
       "User Created Successfully",
       newUser,
@@ -31,6 +36,36 @@ export class AuthController {
     dto: AuthDto,
   ) {
     const user = await this.authService.login(dto);
-    return new ApiResponse(HttpStatus.OK, "User logged In Successfully", user);
+    return new ApiResponseWithData(
+      HttpStatus.OK,
+      "User logged In Successfully",
+      user,
+    );
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post("forget-password")
+  async forgetPasswordRequest(
+    @Body()
+    dto: ForgetPasswordDto,
+  ) {
+    await this.authService.forgetPassword(dto);
+    return new ApiResponseWithoutData(
+      HttpStatus.OK,
+      "Password Reset Link Send Successfully check your email",
+    );
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post("reset-password")
+  async resetPassword(
+    @Body()
+    dto: ResetPasswordDto,
+  ) {
+    await this.authService.userResetPassword(dto);
+    return new ApiResponseWithoutData(
+      HttpStatus.OK,
+      "Password reset Successfully",
+    );
   }
 }

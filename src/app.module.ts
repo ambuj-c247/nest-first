@@ -6,7 +6,7 @@ import { AdminModule } from "./admin/admin.module";
 import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { UserSchema } from "./user/schema/user.schema";
-
+import { MulterModule } from "./multer/multer.module";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,6 +18,7 @@ import { UserSchema } from "./user/schema/user.schema";
     AuthModule,
     UserModule,
     AdminModule,
+    MulterModule,
   ],
 })
 export class AppModule {}

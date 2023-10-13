@@ -36,6 +36,7 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
 UserSchema.methods.toJSON = function () {
   const obj = this.toObject(); //or var obj = this;
   delete obj.password;
